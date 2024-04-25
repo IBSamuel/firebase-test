@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <title>Dashboard</title>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><img class="rounded-2 w-25" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEBqYEUHs9SPync2bo8AmdYjzW5WYicOWF8lreCXnMcQ&s" alt=""></a>
+        </div>
+    </nav>
+    <p class="h1 p-5">"iB SAM "Welcome to todo App</p>
+    <form class="w-75 mx-auto shadow p-4 rounded" id="todoForm" onsubmit="return validateForm()">
+        <p class="h1">To Do App</p>
+        <div class="mb-3">
+            <label class="form-label">Todo Title</label>
+            <input type="text" class="form-control" id="todoTitle" placeholder="I want to go to school">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Todo Category</label>
+            <input type="text" class="form-control" id="todoCategory" placeholder="action">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Todo Time</label>
+            <input type="time" class="form-control" id="todoTime" placeholder="12">
+        </div>
+        <p id="error" class="text-danger"></p>
+        <button type="submit" class="btn btn-primary">Add To Do</button>
+    </form>
+
+    <script>
+        function validateForm() {
+            var title = document.getElementById("todoTitle").value;
+            var category = document.getElementById("todoCategory").value;
+            var time = document.getElementById("todoTime").value;
+            var error = document.getElementById("error");
+
+            if (title === "" || category === "" || time === "") {
+                error.innerText = "Invalid details. Please fill out all fields.";
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

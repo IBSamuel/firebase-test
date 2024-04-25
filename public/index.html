@@ -8,9 +8,11 @@
   <title>Document</title>
 </head>
 <body>
+  <div class="m-5">
+    <button id="siginBtn" class="btn border border-2 m-5"> <img class="w-25" src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png" alt="">Sign In With Google</button>
+  </div>
   <div id="alInfo">
-    <h1>Hilo</h1>
-    <button id="siginBtn">Sigin</button>
+
   </div>
   <script type="module">
     // Import the functions you need from the SDKs you need
@@ -42,8 +44,16 @@
 
         // localStorage.setItem(JSON.stringify(saveDetail))
         console.log(response)
-        // let name = response.displayName
-        // window.location.href = "/dashboard.html"
+        let name = response.user.displayName
+        let photo = response.user.photoURL
+        allinfo.innerHTML=`
+        <img class="w-25 rounded-circle" src=${photo} alt="">
+          <h1>
+          you are welcome ${name}
+          </h1>
+          
+        `
+        setTimeout(() => {window.location.href = "/dashboard.html"  }, 5000);
       })
       .catch((error)=>{
         console.log(error)

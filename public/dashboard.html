@@ -1,93 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-    <title>Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notepad App</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f5f5f5;
+    }
+
+    .note-card {
+      width: 350px;
+      height: 600px;
+      border-radius: 15px;
+      background-color: #fff;
+      padding: 20px;
+      margin: 50px auto;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .note-header {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .note-input {
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      padding: 10px;
+      background-color: #f0f0f0;
+      margin-bottom: 10px;
+    }
+
+    .note-actions {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .keyboard {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .keyboard-key {
+      background-color: #d1a874;
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      margin: 3px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+    }
+  </style>
 </head>
-
 <body>
-    <nav class="navbar">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#"><img class="rounded-2 w-25"
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEBqYEUHs9SPync2bo8AmdYjzW5WYicOWF8lreCXnMcQ&s"
-                    alt=""></a>
-        </div>
-    </nav>
-    <p class="h1 p-5">"iB SAM "Welcome to todo App</p>
-    <form class="w-75 mx-auto shadow p-4 rounded" id="todoForm" onsubmit="return validateForm()">
-        <p class="h1">To Do App</p>
-        <div class="mb-3">
-            <label class="form-label">Todo Title</label>
-            <input type="text" class="form-control" id="todoTitle" placeholder="I want to go to school">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Todo Category</label>
-            <input type="text" class="form-control" id="todoCategory" placeholder="action">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Todo Time</label>
-            <input type="time" class="form-control" id="todoTime" placeholder="12">
-        </div>
-        <p id="error" class="text-danger"></p>
-        <button type="submit" class="btn btn-primary">Add To Do</button>
-    </form>
 
-    <script type="module">
+<div class="note-card">
+  <div class="d-flex justify-content-between align-items-center">
+    <button class="btn btn-link">
+      <i class="bi bi-arrow-left"></i>
+    </button>
+    <h4>Today...</h4>
+  </div>
 
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+  <!-- Note Input -->
+  <textarea id="noteContent" class="note-input" rows="3" placeholder="Your note here..."></textarea>
 
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyB5GXDVbeQ-__LD7eVfHZt49fWUO8RxAlg",
-    authDomain: "another-one-22e4b.firebaseapp.com",
-    databaseURL: "https://another-one-22e4b-default-rtdb.firebaseio.com",
-    projectId: "another-one-22e4b",
-    storageBucket: "another-one-22e4b.appspot.com",
-    messagingSenderId: "694224504686",
-    appId: "1:694224504686:web:f88a06431e5a9194e6a37f"
-        };
+  <!-- Action Buttons -->
+  <div class="note-actions">
+    <button id="deleteNote" class="btn btn-outline-danger">
+      <i class="bi bi-trash"></i>
+    </button>
+    <button id="addNote" class="btn btn-outline-primary">
+      <i class="bi bi-plus-circle"></i>
+    </button>
+  </div>
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
+  <!-- Virtual Keyboard -->
+  <div class="keyboard mt-5">
+    <button class="keyboard-key">A</button>
+    <button class="keyboard-key">B</button>
+    <button class="keyboard-key">C</button>
+    <!-- Add as many keys as needed -->
+  </div>
+</div>
 
-        function validateForm() {
-            var title = document.getElementById("todoTitle").value;
-            var category = document.getElementById("todoCategory").value;
-            var time = document.getElementById("todoTime").value;
-            var error = document.getElementById("error");
+<!-- Add Note Modal -->
+<div class="modal fade" id="addNoteModal" tabindex="-1" aria-labelledby="addNoteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addNoteModalLabel">Add New Note</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="addNoteForm">
+          <div class="mb-3">
+            <label for="noteTitle" class="form-label">Title</label>
+            <input type="text" class="form-control" id="noteTitle" required>
+          </div>
+          <div class="mb-3">
+            <label for="noteContentModal" class="form-label">Note</label>
+            <textarea class="form-control" id="noteContentModal" rows="3" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Note</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
-            if (title === "" || category === "" || time === "") {
-                error.innerText = "Invalid details. Please fill out all fields.";
-                return false;
-            }
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Handle Add Note Button
+  document.getElementById('addNote').addEventListener('click', () => {
+    const addNoteModal = new bootstrap.Modal(document.getElementById('addNoteModal'));
+    addNoteModal.show();
+  });
 
-            var todo = {
-                title: title,
-                category: category,
-                time: time
-            };
+  // Handle Form Submit
+  document.getElementById('addNoteForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const title = document.getElementById('noteTitle').value;
+    const content = document.getElementById('noteContentModal').value;
 
-            // Push the new todo item to the database
-            set(ref(database, 'todolist'), todo);
+    // Save to Database (replace with actual database logic)
+    console.log('Note Saved', { title, content });
 
-            // Clear the form fields
-            document.getElementById("todoTitle").value = "";
-            document.getElementById("todoCategory").value = "";
-            document.getElementById("todoTime").value = "";
+    // Clear form
+    this.reset();
 
-            return false; // Prevent form submission
-        }
-    </script>
+    // Hide modal
+    const addNoteModal = bootstrap.Modal.getInstance(document.getElementById('addNoteModal'));
+    addNoteModal.hide();
+  });
+
+  // Handle Delete Note (simple example)
+  document.getElementById('deleteNote').addEventListener('click', () => {
+    document.getElementById('noteContent').value = '';
+    console.log('Note deleted');
+  });
+</script>
+
 </body>
-
 </html>
